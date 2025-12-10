@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tesla Deep Link</title>
+</head>
+<body>
+  <h3>테슬라 앱 열기</h3>
+
+  <!-- 사용자에게 보이는 버튼 -->
+  <a href="tesla://charging_home_screen" 
+     style="font-size:20px; color:blue; text-decoration:none;">
+     👉 테슬라 앱에서 충전 화면 열기
+  </a>
+
+  <script>
+    // 일부 브라우저는 자동 딥링크를 막기 때문에 자동 시도 + 사용자 버튼 제공
+    setTimeout(function () {
+      window.location.href = "tesla://charging_home_screen";
+    }, 300);
+  </script>
+
+</body>
+</html>
