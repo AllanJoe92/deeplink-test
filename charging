@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tesla Deep Link</title>
+</head>
+<body>
+<h3>테슬라 앱 열기</h3>
+<a href="tesla://charging_home_screen" style="font-size:20px;">여기를 눌러 앱 열기</a>
+
+<script>
+    // iOS/Android 브라우저에서 앱 열기 시도
+    window.location.href = "tesla://charging_home_screen";
+</script>
+
+</body>
+</html>
