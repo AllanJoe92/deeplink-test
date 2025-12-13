@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>Tesla – Service Schedule</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    window.onload = function () {
+      var deeplink = "tesla://vehicle_location/0";
+
+      var playStore = "https://play.google.com/store/apps/details?id=com.teslamotors.tesla";
+      var appStore  = "https://apps.apple.com/app/id582007913";
+      var webFallback = "https://www.tesla.com/app";
+
+      var isAndroid = /Android/i.test(navigator.userAgent);
+      var isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      // 딥링크 시도
+      var iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = deeplink;
+      document.body.appendChild(iframe);
+
+      var fallbackDelay = 2500; // 1.5초 후에도 페이지가 보이면 스토어로
+
+      var timer = setTimeout(function () {
+        var isHidden = document.hidden || document.webkitHidden;
+
+        // 앱이 열리지 않아 페이지가 그대로 보이는 경우에만 스토어로 이동
+        if (!isHidden) {
+          if (isAndroid) {
+            window.location.href = playStore;
+          } else if (isIOS) {
+            window.location.href = appStore;
+          } else {
+            window.location.href = webFallback;
+          }
+        }
+      }, fallbackDelay);
+
+      // 앱이 열리면 보통 페이지가 background 로 가면서 hidden 이 됨
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden || document.webkitHidden) {
+          clearTimeout(timer); // 앱이 열린 것으로 보고 스토어 이동 취소
+        }
+      });
+    };
+  </script>
+</head>
+<body>
+  <h1>Tesla – Location</h1>
+  <p>앱이 자동으로 열리지 않으면 아래 버튼을 눌러주세요.</p>
+  <p>
+    <a href="tesla://vehicle_location/0">테슬라 앱 열기</a>
+  </p>
+</body>
+</html>
