@@ -3,29 +3,72 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>YouTube 열기</title>
-<link rel="canonical" href="https://youtube.com/shorts/E1d0DsUk5os" />
+<title>YouTube 앱 열기</title>
 <style>
-   body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; padding: 24px; }
-   .btn { display:inline-block; padding:12px 16px; border:1px solid #ddd; border-radius:10px; text-decoration:none; margin-right:8px; }
+   body {
+     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                  "Noto Sans KR", Arial, sans-serif;
+     padding: 24px;
+     line-height: 1.4;
+     text-align: center;
+   }
+   .btn {
+     display: inline-block;
+     margin: 10px 6px;
+     padding: 10px 16px;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+     text-decoration: none;
+     font-size: 15px;
+     color: #000;
+   }
+   .hint {
+     margin-top: 18px;
+     font-size: 14px;
+     color: #555;
+   }
 </style>
 </head>
 <body>
-<h3>유튜브 앱으로 여는 중…</h3>
-<p>자동 이동이 되지 않으면 아래 버튼을 눌러주세요.</p>
-<p>
-<a class="btn" href="https://youtube.com/shorts/E1d0DsUk5os">웹으로 열기</a>
-<a class="btn" href="youtube://shorts/E1d0DsUk5os">앱으로 열기</a>
-</p>
+<h3>유튜브 앱으로 열기 시도 중…</h3>
+<p>잠시만 기다려 주세요. 자동으로 이동됩니다.</p>
+<a class="btn" href="https://youtube.com/shorts/E1d0DsUk5os?si=4h9PrC87Z3-zaKKC">
+   웹으로 열기
+</a>
+<div class="hint">
+   (앱이 열리지 않으면 아래 버튼 또는<br>
+   오른쪽 상단 ⋮ → “브라우저에서 열기”를 시도해 보세요)
+</div>
 <script>
    (function () {
      const VIDEO_ID = "E1d0DsUk5os";
-     const APP_URL = `youtube://shorts/${VIDEO_ID}`;
-     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}`;
-     window.location.href = APP_URL;
-     setTimeout(() => {
-       window.location.href = WEB_URL;
-     }, 700);
+     const SI_PARAM = "4h9PrC87Z3-zaKKC";
+     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI_PARAM}`;
+     const IOS_APP_LINK = `youtube://shorts/${VIDEO_ID}`;
+     const ANDROID_INTENT_LINK =
+       `intent://shorts/${VIDEO_ID}` +
+       `?si=${SI_PARAM}` +
+       `#Intent;scheme=https;package=com.google.android.youtube;end;`;
+     const ua = navigator.userAgent || "";
+     const isAndroid = ua.toLowerCase().includes("android");
+     const isIOS = /iphone|ipad|ipod/i.test(ua);
+     if (isAndroid) {
+       // Android: intent 시도
+       location.href = ANDROID_INTENT_LINK;
+       // 실패 시 웹 fallback
+       setTimeout(() => {
+         location.href = WEB_URL;
+       }, 800);
+     } else if (isIOS) {
+       // iOS: 기존 앱 시도
+       location.href = IOS_APP_LINK;
+       setTimeout(() => {
+         location.href = WEB_URL;
+       }, 700);
+     } else {
+       // 기타 환경
+       location.href = WEB_URL;
+     }
    })();
 </script>
 </body>
