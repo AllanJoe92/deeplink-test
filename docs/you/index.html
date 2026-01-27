@@ -1,27 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>YouTube 열기</title>
+<style>
+   body {
+     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                  "Noto Sans KR", Arial, sans-serif;
+     padding: 24px;
+     line-height: 1.45;
+     text-align: center;
+   }
+   .btn {
+     display: block;
+     margin: 12px auto;
+     padding: 12px 18px;
+     max-width: 260px;
+     border-radius: 10px;
+     border: 1px solid #ddd;
+     text-decoration: none;
+     color: #000;
+     font-size: 15px;
+     background: #fafafa;
+   }
+   .primary {
+     background: #ff0000;
+     color: #fff;
+     border: none;
+     font-weight: 600;
+   }
+   .hint {
+     margin-top: 18px;
+     font-size: 14px;
+     color: #555;
+   }
+</style>
+</head>
+<body>
+<h3>유튜브 앱으로 열기</h3>
+<p>아래 버튼을 눌러 시청해 주세요.</p>
+<!-- 핵심 버튼 -->
+<a class="btn primary" id="openAppBtn">유튜브 앱으로 열기</a>
+<a class="btn" id="openWebBtn">웹으로 열기</a>
+<div class="hint" id="androidHint" style="display:none;">
+   ⚠️ 안드로이드 카카오톡에서는 자동 앱 전환이 제한됩니다.<br>
+   앱이 열리지 않으면 위 버튼을 눌러 주세요.<br><br>
+   또는 오른쪽 상단 <b>⋮</b> → <b>브라우저에서 열기</b>
+</div>
 <script>
-(function () {
- const VIDEO_ID = "E1d0DsUk5os";
- const SI = "4h9PrC87Z3-zaKKC";
- const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
- const ANDROID_APP = `youtube://shorts/${VIDEO_ID}`;
- const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
- const ua = navigator.userAgent.toLowerCase();
- const isAndroid = ua.includes("android");
- const isIOS = /iphone|ipad|ipod/.test(ua);
- if (isAndroid) {
-   // ✅ 1) 플레이스토어로 안 가는 앱 시도
-   location.href = ANDROID_APP;
-   // ✅ 2) 실패 시 바로 웹
-   setTimeout(() => {
-     location.href = WEB_URL;
-   }, 700);
- } else if (isIOS) {
-   location.href = IOS_APP;
-   setTimeout(() => {
-     location.href = WEB_URL;
-   }, 700);
- } else {
-   location.href = WEB_URL;
- }
-})();
+   (function () {
+     const VIDEO_ID = "E1d0DsUk5os";
+     const SI = "4h9PrC87Z3-zaKKC";
+     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+     const APP_SCHEME = `youtube://shorts/${VIDEO_ID}`;
+     const ua = navigator.userAgent.toLowerCase();
+     const isAndroid = ua.includes("android");
+     const isIOS = /iphone|ipad|ipod/.test(ua);
+     const openAppBtn = document.getElementById("openAppBtn");
+     const openWebBtn = document.getElementById("openWebBtn");
+     const androidHint = document.getElementById("androidHint");
+     // 버튼 동작
+     openAppBtn.onclick = () => {
+       location.href = APP_SCHEME;
+     };
+     openWebBtn.onclick = () => {
+       location.href = WEB_URL;
+     };
+     if (isIOS) {
+       // ✅ iOS: 자동 앱 시도 유지
+       location.href = APP_SCHEME;
+       setTimeout(() => {
+         location.href = WEB_URL;
+       }, 700);
+     }
+     if (isAndroid) {
+       // ❗ Android: 자동은 시도하되 기대하지 않음
+       androidHint.style.display = "block";
+       setTimeout(() => {
+         location.href = APP_SCHEME;
+       }, 300);
+     }
+   })();
 </script>
+</body>
+</html>
