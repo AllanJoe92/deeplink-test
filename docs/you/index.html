@@ -9,19 +9,19 @@
      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
                   "Noto Sans KR", Arial, sans-serif;
      padding: 24px;
-     line-height: 1.45;
+     line-height: 1.5;
      text-align: center;
    }
    .btn {
      display: block;
-     margin: 12px auto;
-     padding: 12px 18px;
-     max-width: 260px;
+     margin: 14px auto;
+     padding: 14px 18px;
+     max-width: 280px;
      border-radius: 10px;
      border: 1px solid #ddd;
      text-decoration: none;
      color: #000;
-     font-size: 15px;
+     font-size: 16px;
      background: #fafafa;
    }
    .primary {
@@ -33,55 +33,26 @@
    .hint {
      margin-top: 18px;
      font-size: 14px;
-     color: #555;
+     color: #666;
    }
 </style>
 </head>
 <body>
-<h3>유튜브 앱으로 열기</h3>
+<h3>유튜브에서 보기</h3>
 <p>아래 버튼을 눌러 시청해 주세요.</p>
-<!-- 핵심 버튼 -->
-<a class="btn primary" id="openAppBtn">유튜브 앱으로 열기</a>
-<a class="btn" id="openWebBtn">웹으로 열기</a>
-<div class="hint" id="androidHint" style="display:none;">
-   ⚠️ 안드로이드 카카오톡에서는 자동 앱 전환이 제한됩니다.<br>
-   앱이 열리지 않으면 위 버튼을 눌러 주세요.<br><br>
-   또는 오른쪽 상단 <b>⋮</b> → <b>브라우저에서 열기</b>
+<!-- 🔴 핵심 버튼 -->
+<a
+   class="btn primary"
+   href="https://youtube.com/shorts/E1d0DsUk5os?si=4h9PrC87Z3-zaKKC"
+   target="_blank"
+   rel="noopener"
+>
+   브라우저에서 열기
+</a>
+<div class="hint">
+   • 안드로이드에서는 카카오톡 내부에서 앱 실행이 제한됩니다.<br>
+   • 외부 브라우저로 열면 유튜브 앱이 자동 실행됩니다.<br>
+   • iOS에서는 자동으로 앱이 열릴 수 있습니다.
 </div>
-<script>
-   (function () {
-     const VIDEO_ID = "E1d0DsUk5os";
-     const SI = "4h9PrC87Z3-zaKKC";
-     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
-     const APP_SCHEME = `youtube://shorts/${VIDEO_ID}`;
-     const ua = navigator.userAgent.toLowerCase();
-     const isAndroid = ua.includes("android");
-     const isIOS = /iphone|ipad|ipod/.test(ua);
-     const openAppBtn = document.getElementById("openAppBtn");
-     const openWebBtn = document.getElementById("openWebBtn");
-     const androidHint = document.getElementById("androidHint");
-     // 버튼 동작
-     openAppBtn.onclick = () => {
-       location.href = APP_SCHEME;
-     };
-     openWebBtn.onclick = () => {
-       location.href = WEB_URL;
-     };
-     if (isIOS) {
-       // ✅ iOS: 자동 앱 시도 유지
-       location.href = APP_SCHEME;
-       setTimeout(() => {
-         location.href = WEB_URL;
-       }, 700);
-     }
-     if (isAndroid) {
-       // ❗ Android: 자동은 시도하되 기대하지 않음
-       androidHint.style.display = "block";
-       setTimeout(() => {
-         location.href = APP_SCHEME;
-       }, 300);
-     }
-   })();
-</script>
 </body>
 </html>
