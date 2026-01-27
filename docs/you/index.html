@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>YouTube 열기</title>
+<link rel="canonical" href="https://youtube.com/shorts/E1d0DsUk5os" />
+<style>
+   body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif; padding: 24px; }
+   .btn { display:inline-block; padding:12px 16px; border:1px solid #ddd; border-radius:10px; text-decoration:none; margin-right:8px; }
+</style>
+</head>
+<body>
+<h3>유튜브 앱으로 여는 중…</h3>
+<p>자동 이동이 되지 않으면 아래 버튼을 눌러주세요.</p>
+<p>
+<a class="btn" href="https://youtube.com/shorts/E1d0DsUk5os">웹으로 열기</a>
+<a class="btn" href="youtube://shorts/E1d0DsUk5os">앱으로 열기</a>
+</p>
+<script>
+   (function () {
+     const VIDEO_ID = "E1d0DsUk5os";
+     const APP_URL = `youtube://shorts/${VIDEO_ID}`;
+     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}`;
+     window.location.href = APP_URL;
+     setTimeout(() => {
+       window.location.href = WEB_URL;
+     }, 700);
+   })();
+</script>
+</body>
+</html>
