@@ -8,39 +8,29 @@
 <body>
 <script>
 (function () {
- const VIDEO_ID = "E1d0DsUk5os";
- const SI = "4h9PrC87Z3-zaKKC";
- // 📌 웹 fallback
- // - Android: hl=ko 붙임
- // - iOS: 기존 그대로
- const WEB_URL_ANDROID =
-   `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}&hl=ko`;
- const WEB_URL_IOS =
-   `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
- // 📌 앱 스킴 (언어 파라미터 의미 없음 → 그대로)
- const ANDROID_APP = `youtube://shorts/${VIDEO_ID}?si=${SI}&hl=ko`;
- const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
- const ua = navigator.userAgent.toLowerCase();
- const isAndroid = ua.includes("android");
- const isIOS = /iphone|ipad|ipod/.test(ua);
- if (isAndroid) {
-   // 1️⃣ 안드로이드: 앱 열기 시도
-   location.href = ANDROID_APP;
-   // 2️⃣ 실패 시 → 한국어 웹 fallback
-   setTimeout(() => {
-     location.href = WEB_URL_ANDROID;
-   }, 700);
- } else if (isIOS) {
-   // 1️⃣ iOS: 기존 동작 그대로
-   location.href = IOS_APP;
-   // 2️⃣ 실패 시 → 기존 웹 fallback
-   setTimeout(() => {
-     location.href = WEB_URL_IOS;
-   }, 700);
- } else {
-   // 기타 환경
-   location.href = WEB_URL_IOS;
- }
+   const VIDEO_ID = "E1d0dsUk5os";
+   const SI = "4h9Prc87Z3-zaKKC";
+   // 1. 안드로이드용: 언어(hl)와 지역(gl)을 모두 한국으로 고정
+   const WEB_URL_ANDROID = `https://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}&hl=ko&gl=kr`;
+   // 2. iOS용: 기존 요청대로 유지 (필요시 여기도 &hl=ko&gl=kr 추가 가능)
+   const WEB_URL_IOS = `https://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+   const ua = navigator.userAgent.toLowerCase();
+   const isAndroid = ua.includes("android");
+   const isIos = /iphone|ipad|ipod/.test(ua);
+   if (isAndroid) {
+       // Intent 스킴에도 파라미터를 포함하여 앱 실행 시에도 한국 설정을 유도합니다.
+       // 앱 미설치 시 브라우저로 넘어갈 때(fallback) hl=ko와 gl=kr이 붙은 URL로 이동합니다.
+       const intentUrl = `intent://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}&hl=ko&gl=kr#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=${encodeURIComponent(WEB_URL_ANDROID)};end`;
+       location.href = intentUrl;
+   } else if (isIos) {
+       const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
+       location.href = IOS_APP;
+       setTimeout(() => {
+           location.href = WEB_URL_IOS;
+       }, 700);
+   } else {
+       location.href = WEB_URL_IOS;
+   }
 })();
 </script>
 </body>
