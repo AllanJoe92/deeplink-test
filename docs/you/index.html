@@ -1,68 +1,27 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>YouTube 열기</title>
-<style>
-   body{
-     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
-     padding:24px; line-height:1.5; text-align:center;
-   }
-   .btn{
-     display:block; margin:12px auto; padding:14px 18px; max-width:320px;
-     border:1px solid #ddd; border-radius:10px; text-decoration:none; color:#000; background:#fafafa;
-     font-size:16px;
-   }
-   .primary{ background:#ff0000; color:#fff; border:none; font-weight:700; }
-   .hint{ margin-top:14px; font-size:14px; color:#666; }
-   .small{ font-size:13px; color:#777; margin-top:10px; }
-</style>
-</head>
-<body>
-<h3>유튜브 앱으로 열기</h3>
-<p>안드로이드에서는 아래 버튼을 눌러 앱으로 열기를 시도합니다.</p>
-<a class="btn primary" id="openApp">유튜브 앱으로 열기(안드로이드)</a>
-<a class="btn" id="openWeb">웹으로 열기</a>
-<div class="hint" id="androidHint" style="display:none;">
-   ⚠️ 카카오톡(인앱 브라우저)에서는 앱 열기가 차단될 수 있습니다.<br/>
-   이 경우 <b>웹으로 열기</b>를 누른 뒤, 우측 상단 <b>⋮</b> → <b>브라우저에서 열기</b>를 시도해 주세요.
-</div>
 <script>
-   (function () {
-     // ====== 설정 ======
-     const VIDEO_ID = "E1d0DsUk5os";
-     const SI = "4h9PrC87Z3-zaKKC";
-     // 웹 링크(그대로 유지)
-     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
-     // Android에서만 시도할 youtube:// 스킴
-     const ANDROID_APP_URL = `youtube://shorts/${VIDEO_ID}`;
-     // UA 판단
-     const ua = (navigator.userAgent || "").toLowerCase();
-     const isAndroid = ua.includes("android");
-     // 버튼 연결
-     const openApp = document.getElementById("openApp");
-     const openWeb = document.getElementById("openWeb");
-     const androidHint = document.getElementById("androidHint");
-     openWeb.href = WEB_URL;
-     // Android만 앱 버튼 활성화, 아니면 웹으로만 안내
-     if (!isAndroid) {
-       openApp.textContent = "유튜브(웹)로 열기";
-       openApp.href = WEB_URL;
-       return;
-     }
-     androidHint.style.display = "block";
-     // 클릭 시: 앱 열기 시도 → 실패 시 웹으로
-     openApp.onclick = (e) => {
-       e.preventDefault();
-       // 1) 앱 열기 시도 (카톡에서 무음 차단될 수 있음)
-       window.location.href = ANDROID_APP_URL;
-       // 2) 실패하면 웹으로 fallback
-       setTimeout(() => {
-         window.location.href = WEB_URL;
-       }, 700);
-     };
-   })();
+(function () {
+ const VIDEO_ID = "E1d0DsUk5os";
+ const SI = "4h9PrC87Z3-zaKKC";
+ const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+ const ANDROID_APP = `youtube://shorts/${VIDEO_ID}`;
+ const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
+ const ua = navigator.userAgent.toLowerCase();
+ const isAndroid = ua.includes("android");
+ const isIOS = /iphone|ipad|ipod/.test(ua);
+ if (isAndroid) {
+   // ✅ 1) 플레이스토어로 안 가는 앱 시도
+   location.href = ANDROID_APP;
+   // ✅ 2) 실패 시 바로 웹
+   setTimeout(() => {
+     location.href = WEB_URL;
+   }, 700);
+ } else if (isIOS) {
+   location.href = IOS_APP;
+   setTimeout(() => {
+     location.href = WEB_URL;
+   }, 700);
+ } else {
+   location.href = WEB_URL;
+ }
+})();
 </script>
-</body>
-</html>
