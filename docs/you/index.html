@@ -18,7 +18,7 @@
  const WEB_URL_IOS =
    `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
  // 📌 앱 스킴 (언어 파라미터 의미 없음 → 그대로)
- const ANDROID_APP = `youtube://shorts/${VIDEO_ID}`;
+ const ANDROID_APP = `youtube://shorts/${VIDEO_ID}?si=${SI}&hl=ko`;
  const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
  const ua = navigator.userAgent.toLowerCase();
  const isAndroid = ua.includes("android");
