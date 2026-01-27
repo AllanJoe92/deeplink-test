@@ -1,27 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YouTube 열기</title>
+</head>
+<body>
 <script>
 (function () {
  const VIDEO_ID = "E1d0DsUk5os";
  const SI = "4h9PrC87Z3-zaKKC";
- const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+ // 📌 웹 fallback
+ // - Android: hl=ko 붙임
+ // - iOS: 기존 그대로
+ const WEB_URL_ANDROID =
+   `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}&hl=ko`;
+ const WEB_URL_IOS =
+   `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+ // 📌 앱 스킴 (언어 파라미터 의미 없음 → 그대로)
  const ANDROID_APP = `youtube://shorts/${VIDEO_ID}`;
  const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
  const ua = navigator.userAgent.toLowerCase();
  const isAndroid = ua.includes("android");
  const isIOS = /iphone|ipad|ipod/.test(ua);
  if (isAndroid) {
-   // ✅ 1) 플레이스토어로 안 가는 앱 시도
+   // 1️⃣ 안드로이드: 앱 열기 시도
    location.href = ANDROID_APP;
-   // ✅ 2) 실패 시 바로 웹
+   // 2️⃣ 실패 시 → 한국어 웹 fallback
    setTimeout(() => {
-     location.href = WEB_URL;
+     location.href = WEB_URL_ANDROID;
    }, 700);
  } else if (isIOS) {
+   // 1️⃣ iOS: 기존 동작 그대로
    location.href = IOS_APP;
+   // 2️⃣ 실패 시 → 기존 웹 fallback
    setTimeout(() => {
-     location.href = WEB_URL;
+     location.href = WEB_URL_IOS;
    }, 700);
  } else {
-   location.href = WEB_URL;
+   // 기타 환경
+   location.href = WEB_URL_IOS;
  }
 })();
 </script>
+</body>
+</html>
