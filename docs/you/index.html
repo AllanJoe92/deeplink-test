@@ -1,75 +1,27 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>YouTube 앱 열기</title>
-<style>
-   body {
-     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
-                  "Noto Sans KR", Arial, sans-serif;
-     padding: 24px;
-     line-height: 1.4;
-     text-align: center;
-   }
-   .btn {
-     display: inline-block;
-     margin: 10px 6px;
-     padding: 10px 16px;
-     border: 1px solid #ccc;
-     border-radius: 8px;
-     text-decoration: none;
-     font-size: 15px;
-     color: #000;
-   }
-   .hint {
-     margin-top: 18px;
-     font-size: 14px;
-     color: #555;
-   }
-</style>
-</head>
-<body>
-<h3>유튜브 앱으로 열기 시도 중…</h3>
-<p>잠시만 기다려 주세요. 자동으로 이동됩니다.</p>
-<a class="btn" href="https://youtube.com/shorts/E1d0DsUk5os?si=4h9PrC87Z3-zaKKC">
-   웹으로 열기
-</a>
-<div class="hint">
-   (앱이 열리지 않으면 아래 버튼 또는<br>
-   오른쪽 상단 ⋮ → “브라우저에서 열기”를 시도해 보세요)
-</div>
 <script>
-   (function () {
-     const VIDEO_ID = "E1d0DsUk5os";
-     const SI_PARAM = "4h9PrC87Z3-zaKKC";
-     const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI_PARAM}`;
-     const IOS_APP_LINK = `youtube://shorts/${VIDEO_ID}`;
-     const ANDROID_INTENT_LINK =
-       `intent://shorts/${VIDEO_ID}` +
-       `?si=${SI_PARAM}` +
-       `#Intent;scheme=https;package=com.google.android.youtube;end;`;
-     const ua = navigator.userAgent || "";
-     const isAndroid = ua.toLowerCase().includes("android");
-     const isIOS = /iphone|ipad|ipod/i.test(ua);
-     if (isAndroid) {
-       // Android: intent 시도
-       location.href = ANDROID_INTENT_LINK;
-       // 실패 시 웹 fallback
-       setTimeout(() => {
-         location.href = WEB_URL;
-       }, 800);
-     } else if (isIOS) {
-       // iOS: 기존 앱 시도
-       location.href = IOS_APP_LINK;
-       setTimeout(() => {
-         location.href = WEB_URL;
-       }, 700);
-     } else {
-       // 기타 환경
-       location.href = WEB_URL;
-     }
-   })();
+(function () {
+ const VIDEO_ID = "E1d0DsUk5os";
+ const SI = "4h9PrC87Z3-zaKKC";
+ const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+ const ANDROID_APP = `youtube://shorts/${VIDEO_ID}`;
+ const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
+ const ua = navigator.userAgent.toLowerCase();
+ const isAndroid = ua.includes("android");
+ const isIOS = /iphone|ipad|ipod/.test(ua);
+ if (isAndroid) {
+   // ✅ 1) 플레이스토어로 안 가는 앱 시도
+   location.href = ANDROID_APP;
+   // ✅ 2) 실패 시 바로 웹
+   setTimeout(() => {
+     location.href = WEB_URL;
+   }, 700);
+ } else if (isIOS) {
+   location.href = IOS_APP;
+   setTimeout(() => {
+     location.href = WEB_URL;
+   }, 700);
+ } else {
+   location.href = WEB_URL;
+ }
+})();
 </script>
-</body>
-</html>
