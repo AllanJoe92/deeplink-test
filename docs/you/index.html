@@ -7,34 +7,33 @@
 </head>
 <body>
 <script>
-   (function () {
-       // 1. ID 값 확인 (ID 앞에 숫자나 공백이 없어야 합니다)
-       const VIDEO_ID = "E1d0dsUk5os";
-       const SI = "4h9Prc87Z3-zaKKC";
-       // 2. 표준 파라미터 구성
-       const params = `si=${SI}&hl=ko&gl=KR`;
-       // 3. 웹 이동 주소 (유튜브 표준 주소 사용)
-       const WEB_URL = `https://www.youtube.com/shorts/${VIDEO_ID}?${params}`;
-       const ua = navigator.userAgent.toLowerCase();
-       const isAndroid = ua.includes("android");
-       const isIos = /iphone|ipad|ipod/.test(ua);
-       if (isAndroid) {
-           // 안드로이드 Intent:
-           // 0{VIDEO_ID} 처럼 앞에 숫자가 붙으면 영상을 찾지 못합니다.
-           // 아래는 가장 깨끗한 인텐트 구조입니다.
-           const intentUrl = `intent://www.youtube.com/shorts/${VIDEO_ID}?${params}#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=${encodeURIComponent(WEB_URL)};end`;
-           location.href = intentUrl;
-       } else if (isIos) {
-           // iOS: 기존에 잘 작동하던 방식 유지
-           const IOS_APP = `youtube://shorts/${VIDEO_ID}?${params}`;
-           location.href = IOS_APP;
-           setTimeout(() => {
-               location.href = WEB_URL;
-           }, 800);
-       } else {
+(function () {
+   const VIDEO_ID = "E1d0dsUk5os"; // 쇼츠 영상 ID
+   const SI = "4h9Prc87Z3-zaKKC";
+   // 웹용 파라미터 (한국어/지역 설정 포함)
+   const PARAMS = `hl=ko&gl=KR&si=${SI}`;
+   const WEB_URL = `https://www.youtube.com/shorts/${VIDEO_ID}?${PARAMS}`;
+   const ua = navigator.userAgent.toLowerCase();
+   const isAndroid = ua.includes("android");
+   const isIos = /iphone|ipad|ipod/.test(ua);
+   if (isAndroid) {
+       // [안드로이드] Intent 방식 (앱 실행 우선, 실패 시 한국어 웹)
+       // package 정보를 정확히 넣어 유튜브 앱을 강제 실행합니다.
+       const intentUrl = `intent://www.youtube.com/shorts/${VIDEO_ID}?${PARAMS}#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=${encodeURIComponent(WEB_URL)};end`;
+       location.href = intentUrl;
+   } else if (isIos) {
+       // [iOS] 앱 호출 시에는 파라미터 없이 ID만 깔끔하게 전달 (에러 방지 핵심)
+       const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
+       location.href = IOS_APP;
+       // 앱이 없을 경우 웹으로 이동 (기존 700ms 유지)
+       setTimeout(() => {
            location.href = WEB_URL;
-       }
-   })();
+       }, 700);
+   } else {
+       // PC 및 기타 환경
+       location.href = WEB_URL;
+   }
+})();
 </script>
 </body>
 </html>
