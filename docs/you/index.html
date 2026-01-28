@@ -2,25 +2,45 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>YouTube 열기</title>
+<title>YouTube 한국어로 보기</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+   body {
+     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                  "Noto Sans KR", Arial, sans-serif;
+     padding: 24px;
+     text-align: center;
+   }
+   button {
+     margin-top: 20px;
+     padding: 14px 20px;
+     font-size: 16px;
+     border-radius: 10px;
+     border: none;
+     background: #ff0000;
+     color: #fff;
+     font-weight: 700;
+   }
+</style>
 </head>
 <body>
+<h3>유튜브를 한국어로 여는 중</h3>
+<p>아래 버튼을 눌러 영상을 시청해 주세요.</p>
+<button id="open">한국어로 영상 보기</button>
 <script>
 (function () {
  const VIDEO_ID = "E1d0DsUk5os";
  const SI = "4h9PrC87Z3-zaKKC";
- // 1️⃣ YouTube PREF 쿠키 세팅 URL
- const COOKIE_URL =
-   "https://www.youtube.com/?hl=ko&gl=KR";
- // 2️⃣ 최종 쇼츠 URL
- const TARGET_URL =
-   `https://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
- // 1단계: 쿠키 심기
- window.location.href = COOKIE_URL;
- // 2단계: 쿠키가 세팅된 후 쇼츠로 이동
- setTimeout(() => {
-   window.location.href = TARGET_URL;
- }, 800);
+ // 1️⃣ 페이지 로드 시 쿠키 먼저 심기 (자동)
+ const cookieFrame = document.createElement("iframe");
+ cookieFrame.style.display = "none";
+ cookieFrame.src = "https://www.youtube.com/?hl=ko&gl=KR";
+ document.body.appendChild(cookieFrame);
+ // 2️⃣ 사용자 클릭으로 쇼츠 이동
+ document.getElementById("open").onclick = () => {
+   window.location.href =
+     `https://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+ };
 })();
 </script>
 </body>
