@@ -2,27 +2,26 @@
 (function () {
 const VIDEO_ID = "E1d0DsUk5os";
 const SI = "4h9PrC87Z3-zaKKC";
-const WEB_URL = `intent://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}&hl=ko&gl=kr`;
-const ANDROID_APP = `intent://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}&hl=ko&gl=kr`;
+const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+const ANDROID_APP = `intent://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
 const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
 const ua = navigator.userAgent.toLowerCase();
 const isAndroid = ua.includes("android");
 const isIOS = /iphone|ipad|ipod/.test(ua);
 if (isAndroid) {
-   // ✅ 1) 플레이스토어로 안 가는 앱 시도
-   location.href = ANDROID_APP;
-   // ✅ 2) 실패 시 바로 웹
-   setTimeout(() => {
-     location.href = WEB_URL;
-   }, 700);
+   // ✅ 1) 플레이스토어로 안 가는 앱 시도
+   location.href = ANDROID_APP;
+   // ✅ 2) 실패 시 바로 웹
+   setTimeout(() => {
+     location.href = WEB_URL;
+   }, 700);
 } else if (isIOS) {
-   location.href = IOS_APP;
-   setTimeout(() => {
-     location.href = WEB_URL;
-   }, 700);
+   location.href = IOS_APP;
+   setTimeout(() => {
+     location.href = WEB_URL;
+   }, 700);
 } else {
-   location.href = WEB_URL;
+   location.href = WEB_URL;
 }
 })();
 </script>
- 
