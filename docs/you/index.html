@@ -1,27 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YouTube 열기</title>
+<style>
+       /* 혹시 앱 전환이 안될 경우를 대비해 사용자 클릭용 버튼을 배치합니다 */
+       body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; background: #f9f9f9; }
+       #open-btn { padding: 15px 25px; font-size: 16px; background: #ff0000; color: white; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; }
+</style>
+</head>
+<body>
+<a id="open-btn" href="javascript:void(0);">유튜브 열기 (이동하지 않을 경우 클릭)</a>
 <script>
-(function () {
-const VIDEO_ID = "E1d0DsUk5os";
-const SI = "4h9PrC87Z3-zaKKC";
-const WEB_URL = `https://youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
-const ANDROID_APP = `youtube://watch?v=/${VIDEO_ID}?si=${SI}&hl=ko&gl=kr`;
-const IOS_APP = `youtube://shorts/${VIDEO_ID}`;
-const ua = navigator.userAgent.toLowerCase();
-const isAndroid = ua.includes("android");
-const isIOS = /iphone|ipad|ipod/.test(ua);
-if (isAndroid) {
-   // ✅ 1) 플레이스토어로 안 가는 앱 시도
-   location.href = ANDROID_APP;
-   // ✅ 2) 실패 시 바로 웹
-   setTimeout(() => {
-     location.href = WEB_URL;
-   }, 700);
-} else if (isIOS) {
-   location.href = IOS_APP;
-   setTimeout(() => {
-     location.href = WEB_URL;
-   }, 700);
-} else {
-   location.href = WEB_URL;
-}
-})();
+   (function () {
+       const VIDEO_ID = "E1d0dsUk5os";
+       const SI = "4h9Prc87Z3-zaKKC";
+       // 파라미터 구성 (hl=ko & gl=kr)
+       const params = `hl=ko&gl=kr&si=${SI}`;
+       const webUrl = `https://www.youtube.com/shorts/${VIDEO_ID}?${params}`;
+       const ua = navigator.userAgent.toLowerCase();
+       const isAndroid = ua.includes("android");
+       const isIos = /iphone|ipad|ipod/.test(ua);
+       function openYoutube() {
+           if (isAndroid) {
+               // 안드로이드 핵심: Intent 스킴
+               // package=com.google.android.youtube 가 있어야 유튜브 앱을 정확히 찾습니다.
+               const intentUrl = `intent://www.youtube.com/shorts/${VIDEO_ID}?${params}#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url=${encodeURIComponent(webUrl)};end`;
+               location.href = intentUrl;
+           } else if (isIos) {
+               // iOS는 기존 방식 유지
+               location.href = `youtube://shorts/${VIDEO_ID}?${params}`;
+               setTimeout(() => {
+                   location.href = webUrl;
+               }, 1500); // iOS는 앱 전환 확인을 위해 시간을 좀 더 줍니다.
+           } else {
+               location.href = webUrl;
+           }
+       }
+       // 1. 페이지 로드 시 즉시 실행 시도
+       openYoutube();
+       // 2. 혹시 웹뷰가 차단했을 경우를 대비해 버튼에도 연결
+       document.getElementById('open-btn').addEventListener('click', openYoutube);
+   })();
 </script>
+</body>
+</html>
