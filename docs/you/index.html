@@ -21,25 +21,28 @@
      color: #fff;
      font-weight: 700;
    }
+   .hint {
+     margin-top: 16px;
+     font-size: 14px;
+     color: #666;
+   }
 </style>
 </head>
 <body>
 <h3>유튜브를 한국어로 여는 중</h3>
 <p>아래 버튼을 눌러 영상을 시청해 주세요.</p>
 <button id="open">한국어로 영상 보기</button>
+<div class="hint">
+ ※ 영상은 웹으로 열리며, 한국어 UI가 우선 적용됩니다.
+</div>
 <script>
 (function () {
  const VIDEO_ID = "E1d0DsUk5os";
- const SI = "4h9PrC87Z3-zaKKC";
- // 1️⃣ 페이지 로드 시 쿠키 먼저 심기 (자동)
- const cookieFrame = document.createElement("iframe");
- cookieFrame.style.display = "none";
- cookieFrame.src = "https://www.youtube.com/?hl=ko&gl=KR";
- document.body.appendChild(cookieFrame);
- // 2️⃣ 사용자 클릭으로 쇼츠 이동
+ // 🎯 한국어 성공률 최우선 URL
+ const TARGET_URL =
+   `https://m.youtube.com/watch?v=${VIDEO_ID}&hl=ko&gl=KR`;
  document.getElementById("open").onclick = () => {
-   window.location.href =
-     `https://www.youtube.com/shorts/${VIDEO_ID}?si=${SI}`;
+   window.location.href = TARGET_URL;
  };
 })();
 </script>
